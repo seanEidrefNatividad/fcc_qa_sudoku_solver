@@ -25,7 +25,23 @@ class SudokuSolver {
   }
 
   checkColPlacement(puzzleString, row, column, value) {
+    const rowArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
+    const startIndex = column % 9 == 0 ? 8 : (column % 9) - 1;
+
+    let puzzleRow = '';
+
+    for (let i = 0; i < 8; i++) {
+      if (i == 0) {
+        puzzleRow += puzzleString[startIndex]
+      } else {
+        puzzleRow += puzzleString[startIndex + (9*i)]
+      }
+    }
+    //console.log(puzzleRow)
+    //console.log(puzzleRow[rowArray.indexOf(row.toUpperCase())])
+
+    return puzzleRow.indexOf(value) > -1 && puzzleRow[rowArray.indexOf(row.toUpperCase())] != value ? "column" : null;
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
