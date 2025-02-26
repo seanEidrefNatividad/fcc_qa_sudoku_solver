@@ -34,6 +34,8 @@ module.exports = function (app) {
         .map(method => solver[method](puzzle, coordinate[0], coordinate[1], value))
         .filter(Boolean);
 
+        if (conflict.indexOf('duplicate') != -1) {res.send({error:  "Puzzle cannot be solved"}); return}
+
         if (conflict.length == 0) {
           res.send({valid: true})
         } else {
@@ -57,7 +59,13 @@ module.exports = function (app) {
       const {status, error} = solver.validate(puzzle)
 
       if(status) {
-        res.send({solution:""})
+        const result = solver.solve(puzzle)
+
+        if (result) {
+          res.send({solution:result})
+        } else {
+          res.send({error: 'Puzzle cannot be solved'})
+        }
         return
       } else {
         res.send({error})
