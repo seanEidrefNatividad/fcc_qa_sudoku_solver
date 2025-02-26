@@ -45,11 +45,28 @@ class SudokuSolver {
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
+    // const col = column % 9 == 0 ? 8 : (column % 9) - 1;
+    // let colGroupArray = [[1,2,3],[4,5,6],[7,8,9]]
+    // let colGroup = colGroupArray[Math.floor(col / 3)]
+    // console.log(col)
 
-  }
+    const rowArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+    const start = rowArray.indexOf(row.toUpperCase());
+    let rowGroupArray = [['A','B','C'],['D','E','F'],['G','H','I']]
+    let rowGroup = rowGroupArray[Math.floor(start / 3)]
+    const colRegion = column%3 == 0 ? 3 : column%3
+    const multiplier = start%3
+    const inputIndex =  ((multiplier*3) + colRegion) - 1;
+    //console.log("("+multiplier + " * " + 3+") + "+ colRegion+" = "+inputIndex)
 
-  solve(puzzleString) {
-    
+    let puzzleRegion = '';
+    rowGroup.forEach(rowReg => {
+      const startIndex = rowArray.indexOf(rowReg) * 9;
+      const puzzleRow = puzzleString.substring(startIndex, startIndex+3)
+      puzzleRegion += puzzleRow
+    })
+
+    return puzzleRegion.indexOf(value) > -1 && puzzleRegion[inputIndex] != value ? "region" : null;
   }
 }
 
