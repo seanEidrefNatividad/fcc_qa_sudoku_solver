@@ -30,7 +30,15 @@ module.exports = function (app) {
       const {status, error} = solver.validate(puzzle)
 
       if(status) {
-        res.send({valid: true})
+        const conflict = ['checkRowPlacement', 'checkColPlacement', 'checkRegionPlacement']
+        .map(method => solver[method](puzzle, coordinate[0], coordinate[1], value))
+        .filter(Boolean);
+
+        if (conflict.length == 0) {
+          res.send({valid: true})
+        } else {
+          res.send({valid: false, conflict})
+        }
       } else {
         res.send({error})
         return;
